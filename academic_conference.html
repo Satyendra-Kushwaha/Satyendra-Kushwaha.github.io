@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Conferences - Satyendra Kushwaha</title>
+
+    <!-- Fonts: Plus Jakarta Sans (Primary) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        slate: {
+                            50: '#f8fafc',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#020617',
+                        },
+                        cyan: {
+                            500: '#06b6d4',
+                            600: '#0891b2',
+                        }
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Reusing Masonry Logic */
+        .masonry-grid {
+            columns: 1;
+            column-gap: 1.5rem;
+        }
+
+        @media (min-width: 640px) {
+            .masonry-grid {
+                columns: 2;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .masonry-grid {
+                columns: 3;
+            }
+        }
+
+        .conference-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .conference-item:hover {
+            transform: translateY(-4px);
+        }
+
+        /* Hover Overlay */
+        .conf-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .conference-item:hover .conf-overlay {
+            opacity: 1;
+        }
+
+        /* Lightbox - Reuse existing ID/classes in script.js */
+        #lightbox {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        #lightbox.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #lightbox-img {
+            max-height: 90vh;
+            max-width: 90vw;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body class="transition-colors duration-300 antialiased min-h-screen flex flex-col relative overflow-x-hidden">
+
+    <!-- Navbar -->
+    <div class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-[95%] px-4 sm:px-6 lg:px-8 pointer-events-none">
+        <nav
+            class="pointer-events-auto nav-floating w-full rounded-full px-2 py-2 flex items-center justify-between gap-2 md:gap-4 transition-all duration-300">
+
+            <a href="index.html"
+                class="px-4 py-2 font-display font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span
+                    class="w-8 h-8 rounded-full bg-cyan-600 flex items-center justify-center text-white text-sm">SK</span>
+                <span class="hidden md:block">Satyendra Kushwaha</span>
+            </a>
+
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center gap-1">
+                <a href="index.html"
+                    class="px-5 py-2.5 text-sm font-display font-bold text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-full transition-all">Home</a>
+                <a href="index.html#about"
+                    class="px-5 py-2.5 text-sm font-display font-bold text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-full transition-all">About</a>
+                <a href="publications.html"
+                    class="px-5 py-2.5 text-sm font-display font-bold text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-full transition-all">Publications</a>
+                <a href="certificates.html"
+                    class="px-5 py-2.5 text-sm font-display font-bold text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-full transition-all">Certificates</a>
+                <a href="academic_conference.html"
+                    class="px-5 py-2.5 text-sm font-display font-bold text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-slate-800/50 rounded-full transition-all">Conferences</a>
+                <a href="gallery.html"
+                    class="px-5 py-2.5 text-sm font-display font-bold text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-full transition-all">Gallery</a>
+            </div>
+
+            <!-- Right Actions -->
+            <div class="flex items-center gap-2 pl-2 pr-2">
+                <button id="theme-toggle"
+                    class="p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors focus:outline-none">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block"></i>
+                </button>
+
+                <button id="mobile-menu-btn"
+                    class="md:hidden p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-900 dark:text-white">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu"
+            class="hidden absolute top-full left-0 w-[90vw] -ml-[45vw] mt-4 bg-white/90 dark:bg-slate-900/95 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl p-4 flex-col gap-2 pointer-events-auto">
+            <a href="index.html"
+                class="block px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-display font-bold">Home</a>
+            <a href="index.html#about"
+                class="block px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-display font-bold">About</a>
+            <a href="publications.html"
+                class="block px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-display font-bold">Publications</a>
+            <a href="certificates.html"
+                class="block px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-display font-bold">Certificates</a>
+            <a href="academic_conference.html"
+                class="block px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-cyan-600 dark:text-cyan-400 font-display font-bold bg-cyan-50 dark:bg-slate-800/50">Conferences</a>
+            <a href="gallery.html"
+                class="block px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-display font-bold">Gallery</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full animate-fade-in mt-24">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-display font-bold text-slate-900 dark:text-white mb-6">
+                Academic Conferences
+            </h1>
+            <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+                Global participation in academic discourse, research presentations, and knowledge exchange.
+            </p>
+        </header>
+
+        <div class="masonry-grid">
+
+            <!-- Item 1: Christ University -->
+            <!-- Reuse existing class .certificate-item or .gallery-item for lightbox logic, or add .conference-item to script.js -->
+            <!-- I will use .certificate-item class addition to ensure it triggers lightbox from script.js logic which selects .certificate-item -->
+
+            <div class="conference-item group certificate-item" data-title="Christ University"
+                data-desc="Location: India">
+                <img src="images/Academic Conference/Christ University, India.jpg" alt="Christ University"
+                    class="w-full h-auto">
+                <div class="conf-overlay backdrop-blur-sm">
+                    <h3 class="text-white text-lg font-bold mb-2">Christ University</h3>
+                    <p class="text-slate-300 text-sm font-semibold uppercase tracking-wider mb-4"><i
+                            class="fas fa-map-marker-alt mr-2 text-cyan-400"></i>India</p>
+                    <span
+                        class="text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-300 px-3 py-1 rounded-full">View
+                        Details</span>
+                </div>
+            </div>
+
+            <!-- Item 2: IIM Calcutta -->
+            <div class="conference-item group certificate-item" data-title="IIM Calcutta" data-desc="Location: India">
+                <img src="images/Academic Conference/IIM Calcutta, India.jpg" alt="IIM Calcutta" class="w-full h-auto">
+                <div class="conf-overlay backdrop-blur-sm">
+                    <h3 class="text-white text-lg font-bold mb-2">IIM Calcutta</h3>
+                    <p class="text-slate-300 text-sm font-semibold uppercase tracking-wider mb-4"><i
+                            class="fas fa-map-marker-alt mr-2 text-cyan-400"></i>India</p>
+                    <span
+                        class="text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-300 px-3 py-1 rounded-full">View
+                        Details</span>
+                </div>
+            </div>
+
+            <!-- Item 3: IIM Nagpur -->
+            <div class="conference-item group certificate-item" data-title="IIM Nagpur" data-desc="Location: India">
+                <img src="images/Academic Conference/IIM Nagpur, India.jpg" alt="IIM Nagpur" class="w-full h-auto">
+                <div class="conf-overlay backdrop-blur-sm">
+                    <h3 class="text-white text-lg font-bold mb-2">IIM Nagpur</h3>
+                    <p class="text-slate-300 text-sm font-semibold uppercase tracking-wider mb-4"><i
+                            class="fas fa-map-marker-alt mr-2 text-cyan-400"></i>India</p>
+                    <span
+                        class="text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-300 px-3 py-1 rounded-full">View
+                        Details</span>
+                </div>
+            </div>
+
+            <!-- Item 4: IIM Sambalpur -->
+            <div class="conference-item group certificate-item" data-title="IIM Sambalpur" data-desc="Location: India">
+                <img src="images/Academic Conference/IIM Sambalpur, India.jpg" alt="IIM Sambalpur"
+                    class="w-full h-auto">
+                <div class="conf-overlay backdrop-blur-sm">
+                    <h3 class="text-white text-lg font-bold mb-2">IIM Sambalpur</h3>
+                    <p class="text-slate-300 text-sm font-semibold uppercase tracking-wider mb-4"><i
+                            class="fas fa-map-marker-alt mr-2 text-cyan-400"></i>India</p>
+                    <span
+                        class="text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-300 px-3 py-1 rounded-full">View
+                        Details</span>
+                </div>
+            </div>
+
+            <!-- Item 5: IIT Dhanbad -->
+            <div class="conference-item group certificate-item" data-title="IIT Dhanbad" data-desc="Location: India">
+                <img src="images/Academic Conference/IIT Dhanbad, India.jpg" alt="IIT Dhanbad" class="w-full h-auto">
+                <div class="conf-overlay backdrop-blur-sm">
+                    <h3 class="text-white text-lg font-bold mb-2">IIT Dhanbad</h3>
+                    <p class="text-slate-300 text-sm font-semibold uppercase tracking-wider mb-4"><i
+                            class="fas fa-map-marker-alt mr-2 text-cyan-400"></i>India</p>
+                    <span
+                        class="text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-300 px-3 py-1 rounded-full">View
+                        Details</span>
+                </div>
+            </div>
+
+            <!-- Item 6: Pokhara University -->
+            <div class="conference-item group certificate-item" data-title="Pokhara University"
+                data-desc="Location: Nepal">
+                <img src="images/Academic Conference/Pokhara University Nepal.jpg" alt="Pokhara University"
+                    class="w-full h-auto">
+                <div class="conf-overlay backdrop-blur-sm">
+                    <h3 class="text-white text-lg font-bold mb-2">Pokhara University</h3>
+                    <p class="text-slate-300 text-sm font-semibold uppercase tracking-wider mb-4"><i
+                            class="fas fa-map-marker-alt mr-2 text-cyan-400"></i>Nepal</p>
+                    <span
+                        class="text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-300 px-3 py-1 rounded-full">View
+                        Details</span>
+                </div>
+            </div>
+
+            <!-- Item 7: Tribhuvan University -->
+            <div class="conference-item group certificate-item" data-title="Tribhuvan University"
+                data-desc="Location: Nepal">
+                <img src="images/Academic Conference/Tribhuwan Unversity, Nepal.jpg" alt="Tribhuvan University"
+                    class="w-full h-auto">
+                <div class="conf-overlay backdrop-blur-sm">
+                    <h3 class="text-white text-lg font-bold mb-2">Tribhuvan University</h3>
+                    <p class="text-slate-300 text-sm font-semibold uppercase tracking-wider mb-4"><i
+                            class="fas fa-map-marker-alt mr-2 text-cyan-400"></i>Nepal</p>
+                    <span
+                        class="text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-300 px-3 py-1 rounded-full">View
+                        Details</span>
+                </div>
+            </div>
+
+            <!-- Item 8: XIME Kochi -->
+            <div class="conference-item group certificate-item" data-title="XIME Kochi" data-desc="Location: India">
+                <img src="images/Academic Conference/XIME Kochi ,India.jpg" alt="XIME Kochi" class="w-full h-auto">
+                <div class="conf-overlay backdrop-blur-sm">
+                    <h3 class="text-white text-lg font-bold mb-2">XIME Kochi</h3>
+                    <p class="text-slate-300 text-sm font-semibold uppercase tracking-wider mb-4"><i
+                            class="fas fa-map-marker-alt mr-2 text-cyan-400"></i>India</p>
+                    <span
+                        class="text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-300 px-3 py-1 rounded-full">View
+                        Details</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Get In Touch Section (Reused) -->
+        <section id="contact" class="mt-24 mb-12 animate-fade-in">
+            <div
+                class="bg-white dark:bg-slate-800/50 rounded-3xl p-8 md:p-12 border border-slate-100 dark:border-slate-700 relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-8 opacity-5">
+                    <i class="fas fa-paper-plane text-9xl"></i>
+                </div>
+
+                <div class="relative z-10">
+                    <h2
+                        class="text-3xl md:text-4xl font-display font-extrabold text-slate-900 dark:text-white uppercase tracking-tight mb-4">
+                        Get in Touch
+                    </h2>
+                    <p class="text-lg text-slate-600 dark:text-slate-300 mb-8 max-w-xl">
+                        Interested in collaboration or have a query? Feel free to reach out. I'm always open to
+                        discussing new projects, creative ideas or opportunities to be part of your visions.
+                    </p>
+
+                    <div class="flex flex-col md:flex-row gap-8 mb-10">
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-full bg-cyan-100 dark:bg-slate-700 flex items-center justify-center text-cyan-600 dark:text-cyan-400">
+                                <i class="fas fa-envelope text-xl"></i>
+                            </div>
+                            <div>
+                                <p
+                                    class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                    Email Me</p>
+                                <a href="mailto:Satyendra2058@gmail.com"
+                                    class="text-base font-bold text-slate-900 dark:text-white hover:text-cyan-600 transition-colors">Satyendra2058@gmail.com</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-full bg-purple-100 dark:bg-slate-700 flex items-center justify-center text-purple-600 dark:text-purple-400">
+                                <i class="fas fa-phone text-xl"></i>
+                            </div>
+                            <div>
+                                <p
+                                    class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                    Call Me</p>
+                                <a href="tel:+9779819280145"
+                                    class="text-base font-bold text-slate-900 dark:text-white hover:text-purple-600 transition-colors">+977-9819280145</a>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="w-12 h-12 rounded-full bg-emerald-100 dark:bg-slate-700 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                                <i class="fas fa-map-marker-alt text-xl"></i>
+                            </div>
+                            <div>
+                                <p
+                                    class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+                                    Location</p>
+                                <span class="text-base font-bold text-slate-900 dark:text-white">Kathmandu, Nepal</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-slate-100 dark:border-slate-700 pt-8">
+                        <p class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider mb-4">
+                            Connect on Social Media</p>
+                        <div class="flex flex-wrap gap-3">
+                            <!-- LinkedIn -->
+                            <a href="https://www.linkedin.com/in/satyendraa-kushwaha-905633200"
+                                class="h-10 w-10 flex items-center justify-center rounded-lg bg-white border border-gray-200 text-blue-800 hover:bg-blue-700 hover:text-white hover:border-blue-700 transition-all shadow-sm dark:bg-navy-800 dark:border-navy-700 dark:text-blue-300 dark:hover:bg-blue-700 dark:hover:text-white">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                            <!-- ResearchGate -->
+                            <a href="https://www.researchgate.net/profile/Satyendra-Kushwaha-4"
+                                class="h-10 w-10 flex items-center justify-center rounded-lg bg-white border border-gray-200 text-teal-600 hover:bg-teal-500 hover:text-white hover:border-teal-500 transition-all shadow-sm dark:bg-navy-800 dark:border-navy-700 dark:text-teal-400 dark:hover:bg-teal-500 dark:hover:text-white">
+                                <i class="fab fa-researchgate"></i>
+                            </a>
+                            <!-- ORCID -->
+                            <a href="https://orcid.org/0009-0008-8948-5820"
+                                class="h-10 w-10 flex items-center justify-center rounded-lg bg-white border border-gray-200 text-green-600 hover:bg-green-500 hover:text-white hover:border-green-500 transition-all shadow-sm dark:bg-navy-800 dark:border-navy-700 dark:text-green-400 dark:hover:bg-green-500 dark:hover:text-white">
+                                <i class="fab fa-orcid"></i>
+                            </a>
+                            <!-- Google Scholar -->
+                            <a href="https://scholar.google.com/citations?user=xA9xfEYAAAAJ&hl=en"
+                                class="h-10 w-10 flex items-center justify-center rounded-lg bg-white border border-gray-200 text-blue-500 hover:bg-blue-500 hover:text-white hover:border-blue-500 transition-all shadow-sm dark:bg-navy-800 dark:border-navy-700 dark:text-blue-400 dark:hover:bg-blue-500 dark:hover:text-white">
+                                <i class="fas fa-graduation-cap"></i>
+                            </a>
+                            <!-- Facebook -->
+                            <a href="https://www.facebook.com/share/1G6zKuDmjt/"
+                                class="h-10 w-10 flex items-center justify-center rounded-lg bg-white border border-gray-200 text-blue-700 hover:bg-blue-600 hover:text-white hover:border-blue-600 transition-all shadow-sm dark:bg-navy-800 dark:border-navy-700 dark:text-blue-400 dark:hover:bg-blue-600 dark:hover:text-white">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            <!-- Instagram -->
+                            <a href="https://www.instagram.com/satyendrakushwaha2024/?igsh=Y3l2Z3o5ZjRpMWhy#"
+                                class="h-10 w-10 flex items-center justify-center rounded-lg bg-white border border-gray-200 text-pink-600 hover:bg-pink-500 hover:text-white hover:border-pink-500 transition-all shadow-sm dark:bg-navy-800 dark:border-navy-700 dark:text-pink-400 dark:hover:bg-pink-500 dark:hover:text-white">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            <!-- X (Twitter) -->
+                            <a href="https://x.com/Satyend24726161?t=h_ZLvIUxfmv6FNxBK6817A&s=08"
+                                class="h-10 w-10 flex items-center justify-center rounded-lg bg-white border border-gray-200 text-black hover:bg-black hover:text-white hover:border-black transition-all shadow-sm dark:bg-navy-800 dark:border-navy-700 dark:text-gray-300 dark:hover:bg-white dark:hover:text-black">
+                                <i class="fa-brands fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Lightbox -->
+    <div id="lightbox" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
+        <button id="lightbox-close" class="absolute top-5 right-5 text-white/70 hover:text-white transition-colors">
+            <i class="fas fa-times text-4xl"></i>
+        </button>
+        <div class="relative flex flex-col items-center">
+            <img id="lightbox-img" src="" alt="Full View" class="rounded-lg shadow-2xl">
+            <div class="mt-6 text-center">
+                <h3 id="lightbox-title" class="text-2xl font-display font-bold text-white mb-2"></h3>
+                <p id="lightbox-desc" class="text-gray-300 text-lg"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-12 mt-12 relative overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"></div>
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6 relative z-10">
+            <p class="text-sm text-slate-400 font-medium tracking-wide">
+                &copy; <span id="year"></span> <span class="text-slate-200">Satyendra Kushwaha</span>. All rights
+                reserved.
+                <span class="hidden md:inline mx-2 text-slate-700">|</span>
+                <span class="block md:inline mt-2 md:mt-0">Designed by <a href="https://vishnucax.github.io/"
+                        class="text-cyan-500 hover:text-cyan-400 transition-colors font-bold">Vishnu K</a></span>
+            </p>
+            <div class="flex space-x-6">
+                <a href="https://www.linkedin.com/in/satyendraa-kushwaha-905633200"
+                    class="text-slate-400 hover:text-white transition-colors transform hover:scale-110"><i
+                        class="fab fa-linkedin text-xl"></i></a>
+                <a href="https://www.researchgate.net/profile/Satyendra-Kushwaha-4"
+                    class="text-slate-400 hover:text-white transition-colors transform hover:scale-110"><i
+                        class="fab fa-researchgate text-xl"></i></a>
+                <a href="https://orcid.org/0009-0008-8948-5820"
+                    class="text-slate-400 hover:text-white transition-colors transform hover:scale-110"><i
+                        class="fab fa-orcid text-xl"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

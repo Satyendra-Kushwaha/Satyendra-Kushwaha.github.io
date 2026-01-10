@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Certificates - Satyendra Kushwaha</title>
+
+    <!-- Fonts: Plus Jakarta Sans (Primary) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        slate: {
+                            50: '#f8fafc', // Light bg
+                            800: '#1e293b',
+                            900: '#0f172a',
+                            950: '#020617', // Dark bg
+                        },
+                        cyan: {
+                            500: '#06b6d4',
+                            600: '#0891b2', // Primary Accent
+                        }
+                    },
+                }
+            }
+        }
+    </script>
+
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="styles.css">
+
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* Masonry Grid Layout for Certificates */
+        .certificates-grid {
+            columns: 1;
+            column-gap: 1.5rem;
+            margin-bottom: 4rem;
+            /* Spacing between sections */
+        }
+
+        @media (min-width: 640px) {
+            .certificates-grid {
+                columns: 2;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .certificates-grid {
+                columns: 3;
+            }
+        }
+
+        .certificate-item {
+            break-inside: avoid;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .certificate-item:hover {
+            transform: translateY(-4px);
+        }
+
+        /* Hover Overlay */
+        .cert-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.9);
+            /* Dark overlay */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            text-align: center;
+            padding: 1.5rem;
+        }
+
+        .certificate-item:hover .cert-overlay {
+            opacity: 1;
+        }
+
+        /* Lightbox Styles */
+        #lightbox {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        #lightbox.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        #lightbox-img {
+            max-height: 90vh;
+            max-width: 90vw;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+
+<body class="transition-colors duration-300 antialiased min-h-screen flex flex-col relative overflow-x-hidden">
+
+    <!-- Floating Navbar -->
+    <div class="fixed top-6 left-1/2 -translate-x-1/2 z-50 w-full max-w-[95%] px-4 sm:px-6 lg:px-8 pointer-events-none">
+        <nav
+            class="pointer-events-auto nav-floating w-full rounded-full px-2 py-2 flex items-center justify-between gap-2 md:gap-4 transition-all duration-300">
+
+            <!-- Logo (Icon only on mobile, Full on desktop) -->
+            <a href="index.html"
+                class="px-4 py-2 font-display font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                <span
+                    class="w-8 h-8 rounded-full bg-cyan-600 flex items-center justify-center text-white text-sm">SK</span>
+                <span class="hidden md:block">Satyendra Kushwaha</span>
+            </a>
+
+            <!-- Desktop Links -->
+            <div class="hidden md:flex items-center gap-1">
+                <a href="index.html"
+                    class="px-5 py-2.5 text-sm font-display font-bold text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-full transition-all">Home</a>
+                <a href="index.html#about"
+                    class="px-5 py-2.5 text-sm font-display font-bold text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-full transition-all">About</a>
+                <a href="publications.html"
+                    class="px-5 py-2.5 text-sm font-display font-bold text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-full transition-all">Publications</a>
+                <a href="certificates.html"
+                    class="px-5 py-2.5 text-sm font-display font-bold text-cyan-600 dark:text-cyan-400 bg-cyan-50 dark:bg-slate-800/50 rounded-full transition-all">Certificates</a>
+                <a href="academic_conference.html"
+                    class="px-5 py-2.5 text-sm font-display font-bold text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-full transition-all">Conferences</a>
+                <a href="gallery.html"
+                    class="px-5 py-2.5 text-sm font-display font-bold text-slate-600 dark:text-slate-300 hover:text-cyan-600 dark:hover:text-cyan-400 hover:bg-slate-100 dark:hover:bg-slate-800/50 rounded-full transition-all">Gallery</a>
+            </div>
+
+            <!-- Right Actions -->
+            <div class="flex items-center gap-2 pl-2 pr-2">
+                <!-- Theme Toggle -->
+                <button id="theme-toggle"
+                    class="p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 transition-colors focus:outline-none">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block"></i>
+                </button>
+
+                <!-- Mobile Menu Button -->
+                <button id="mobile-menu-btn"
+                    class="md:hidden p-2.5 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-900 dark:text-white">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </nav>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu"
+            class="hidden absolute top-full left-0 w-[90vw] -ml-[45vw] mt-4 bg-white/90 dark:bg-slate-900/95 backdrop-blur-xl rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl p-4 flex-col gap-2 pointer-events-auto">
+            <a href="index.html"
+                class="block px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-display font-bold">Home</a>
+            <a href="index.html#about"
+                class="block px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-display font-bold">About</a>
+            <a href="publications.html"
+                class="block px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-display font-bold">Publications</a>
+            <a href="certificates.html"
+                class="block px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-cyan-600 dark:text-cyan-400 font-display font-bold bg-cyan-50 dark:bg-slate-800/50">Certificates</a>
+            <a href="academic_conference.html"
+                class="block px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-display font-bold">Conferences</a>
+            <a href="gallery.html"
+                class="block px-4 py-3 rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 font-display font-bold">Gallery</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-[95%] mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full animate-fade-in mt-24">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-5xl font-display font-bold text-slate-900 dark:text-white mb-6">Certificates &
+                Awards</h1>
+            <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+                A collection of professional certifications, academic achievements, and recognitions awarded throughout
+                my career.
+            </p>
+        </header>
+
+        <!-- SECTION 1: Conference Certificate -->
+        <div class="mb-12">
+            <h2
+                class="font-display font-bold text-3xl md:text-4xl uppercase tracking-tight mb-2 text-slate-900 dark:text-white">
+                Conference Certificate</h2>
+            <p class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-8">Academic
+                Engagements & Presentations</p>
+
+            <div class="certificates-grid">
+
+                <div class="certificate-item group" data-title="CB Bhandari Jain College"
+                    data-desc="Conference Participation">
+                    <img src="images/Conference Certificate/CB Bhandari Jain College , India.jpg"
+                        alt="CB Bhandari Jain College , India" class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">CB Bhandari Jain College</h3>
+                        <p class="text-slate-300 text-xs uppercase tracking-wider mb-4">India</p>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-300 px-3 py-1 rounded-full">View
+                            Certificate</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Christ University" data-desc="Conference Participation">
+                    <img src="images/Conference Certificate/Christ University, India.jpg" alt="Christ University, India"
+                        class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Christ University</h3>
+                        <p class="text-slate-300 text-xs uppercase tracking-wider mb-4">India</p>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-300 px-3 py-1 rounded-full">View
+                            Certificate</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="IIM Calcutta" data-desc="Conference Participation">
+                    <img src="images/Conference Certificate/IIM Calcutta, India.jpg" alt="IIM Calcutta, India"
+                        class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">IIM Calcutta</h3>
+                        <p class="text-slate-300 text-xs uppercase tracking-wider mb-4">India</p>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-300 px-3 py-1 rounded-full">View
+                            Certificate</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="IIM Nagpur" data-desc="Conference Participation">
+                    <img src="images/Conference Certificate/IIM Nagpur, India.jpg" alt="IIM Nagpur, India"
+                        class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">IIM Nagpur</h3>
+                        <p class="text-slate-300 text-xs uppercase tracking-wider mb-4">India</p>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-300 px-3 py-1 rounded-full">View
+                            Certificate</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="IIM Sambalpur" data-desc="Conference Participation">
+                    <img src="images/Conference Certificate/IIM Sambalpur, India.jpg" alt="IIM Sambalpur, India"
+                        class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">IIM Sambalpur</h3>
+                        <p class="text-slate-300 text-xs uppercase tracking-wider mb-4">India</p>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-300 px-3 py-1 rounded-full">View
+                            Certificate</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="IIT Dhanbad" data-desc="Conference Participation">
+                    <img src="images/Conference Certificate/IIT Dhanbad, India.jpg" alt="IIT Dhanbad, India"
+                        class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">IIT Dhanbad</h3>
+                        <p class="text-slate-300 text-xs uppercase tracking-wider mb-4">India</p>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-300 px-3 py-1 rounded-full">View
+                            Certificate</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Pokhara University"
+                    data-desc="Conference Participation">
+                    <img src="images/Conference Certificate/Pokhara University , Nepal.jpg"
+                        alt="Pokhara University , Nepal" class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Pokhara University</h3>
+                        <p class="text-slate-300 text-xs uppercase tracking-wider mb-4">Nepal</p>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-300 px-3 py-1 rounded-full">View
+                            Certificate</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Sambalpur University"
+                    data-desc="Conference Participation">
+                    <img src="images/Conference Certificate/Sambalpur University, India.jpg"
+                        alt="Sambalpur University, India" class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Sambalpur University</h3>
+                        <p class="text-slate-300 text-xs uppercase tracking-wider mb-4">India</p>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-300 px-3 py-1 rounded-full">View
+                            Certificate</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Symbiosis Pune University"
+                    data-desc="Conference Participation">
+                    <img src="images/Conference Certificate/Symbosis Pune University, India.png"
+                        alt="Symbosis Pune University, India" class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Symbiosis Pune University</h3>
+                        <p class="text-slate-300 text-xs uppercase tracking-wider mb-4">India</p>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-300 px-3 py-1 rounded-full">View
+                            Certificate</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Tribhuvan University"
+                    data-desc="Conference Participation">
+                    <img src="images/Conference Certificate/Tribhuvan University, Nepal.jpg"
+                        alt="Tribhuvan University, Nepal" class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Tribhuvan University</h3>
+                        <p class="text-slate-300 text-xs uppercase tracking-wider mb-4">Nepal</p>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-300 px-3 py-1 rounded-full">View
+                            Certificate</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="YuvaKshetra Institute"
+                    data-desc="Conference Participation">
+                    <img src="images/Conference Certificate/YuvaKshetra Institute of Management,India.jpg"
+                        alt="YuvaKshetra Institute of Management,India" class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">YuvaKshetra Institute</h3>
+                        <p class="text-slate-300 text-xs uppercase tracking-wider mb-4">India</p>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-cyan-300 border border-cyan-300 px-3 py-1 rounded-full">View
+                            Certificate</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- SECTION 2: Achievement Certificate -->
+        <div>
+            <h2
+                class="font-display font-bold text-3xl md:text-4xl uppercase tracking-tight mb-2 text-slate-900 dark:text-white">
+                Achievement Certificates</h2>
+            <p class="text-sm font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest mb-8">Awards,
+                Recognitions & Honors</p>
+
+            <div class="certificates-grid">
+
+                <div class="certificate-item group" data-title="Certificate of Award" data-desc="Achievement">
+                    <img src="images/Achievement Certificate/Certifiacte of Award.jpg" alt="Certifiacte of Award"
+                        class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Certificate of Award</h3>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-green-300 border border-green-300 px-3 py-1 rounded-full">View
+                            Details</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Certificate" data-desc="Achievement">
+                    <img src="images/Achievement Certificate/Certifiacte.jpg" alt="Certifiacte" class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Certificate</h3>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-green-300 border border-green-300 px-3 py-1 rounded-full">View
+                            Details</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Certificate of Appreciation" data-desc="Achievement">
+                    <img src="images/Achievement Certificate/Certificate of Apprecation.jpg"
+                        alt="Certificate of Apprecation" class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Appreciation</h3>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-green-300 border border-green-300 px-3 py-1 rounded-full">View
+                            Details</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Best Paper Award" data-desc="Achievement">
+                    <img src="images/Achievement Certificate/Certificate of Best paper Award.jpg"
+                        alt="Certificate of Best paper Award" class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Best Paper Award</h3>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-yellow-300 border border-yellow-300 px-3 py-1 rounded-full">View
+                            Details</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Certificate of Experience" data-desc="Achievement">
+                    <img src="images/Achievement Certificate/Certificate of Experience.jpg"
+                        alt="Certificate of Experience" class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Experience</h3>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-green-300 border border-green-300 px-3 py-1 rounded-full">View
+                            Details</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Google Certification" data-desc="Achievement">
+                    <img src="images/Achievement Certificate/Certificate of Google.jpg" alt="Certificate of Google"
+                        class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Google Certification</h3>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-green-300 border border-green-300 px-3 py-1 rounded-full">View
+                            Details</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Certificate of Participation" data-desc="Achievement">
+                    <img src="images/Achievement Certificate/Certificate of Participation (2).jpg"
+                        alt="Certificate of Participation" class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Participation</h3>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-green-300 border border-green-300 px-3 py-1 rounded-full">View
+                            Details</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Certificate of Participation" data-desc="Achievement">
+                    <img src="images/Achievement Certificate/Certificate of Participation.jpg"
+                        alt="Certificate of Participation" class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Participation</h3>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-green-300 border border-green-300 px-3 py-1 rounded-full">View
+                            Details</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Certificate of Recognition" data-desc="Achievement">
+                    <img src="images/Achievement Certificate/Certificate of Recognition.jpg"
+                        alt="Certificate of Recognition" class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Recognition</h3>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-green-300 border border-green-300 px-3 py-1 rounded-full">View
+                            Details</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Completion Certification" data-desc="Achievement">
+                    <img src="images/Achievement Certificate/Certification of Completion.jpg"
+                        alt="Certification of Completion" class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Completion</h3>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-green-300 border border-green-300 px-3 py-1 rounded-full">View
+                            Details</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="KPMG Certificate" data-desc="Achievement">
+                    <img src="images/Achievement Certificate/KPMG, Certificate.png" alt="KPMG, Certificate"
+                        class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">KPMG Certificate</h3>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-blue-300 border border-blue-300 px-3 py-1 rounded-full">View
+                            Details</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Letter of Recognition" data-desc="Achievement">
+                    <img src="images/Achievement Certificate/Letter of Recognition.jpg" alt="Letter of Recognition"
+                        class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Letter of Recognition</h3>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-green-300 border border-green-300 px-3 py-1 rounded-full">View
+                            Details</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Reviewer Award" data-desc="Achievement">
+                    <img src="images/Achievement Certificate/Reviewer Award (2).jpg" alt="Reviewer Award"
+                        class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Reviewer Award</h3>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-yellow-300 border border-yellow-300 px-3 py-1 rounded-full">View
+                            Details</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Reviewer Award" data-desc="Achievement">
+                    <img src="images/Achievement Certificate/Reviewer Award.jpg" alt="Reviewer Award"
+                        class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Reviewer Award</h3>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-yellow-300 border border-yellow-300 px-3 py-1 rounded-full">View
+                            Details</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Token of Love" data-desc="Achievement">
+                    <img src="images/Achievement Certificate/Token of Love (2).jpg" alt="Token of Love"
+                        class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Token of Love</h3>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-rose-300 border border-rose-300 px-3 py-1 rounded-full">View
+                            Details</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Token of Love" data-desc="Achievement">
+                    <img src="images/Achievement Certificate/Token of Love (3).jpg" alt="Token of Love"
+                        class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Token of Love</h3>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-rose-300 border border-rose-300 px-3 py-1 rounded-full">View
+                            Details</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Token of Love" data-desc="Achievement">
+                    <img src="images/Achievement Certificate/Token of Love.jpg" alt="Token of Love"
+                        class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Token of Love</h3>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-rose-300 border border-rose-300 px-3 py-1 rounded-full">View
+                            Details</span>
+                    </div>
+                </div>
+
+                <div class="certificate-item group" data-title="Young Achiever Award" data-desc="Achievement">
+                    <img src="images/Achievement Certificate/Young Achiver Award.jpg" alt="Young Achiver Award"
+                        class="w-full h-auto">
+                    <div class="cert-overlay backdrop-blur-sm">
+                        <h3 class="text-white text-lg font-bold mb-2">Young Achiever</h3>
+                        <span
+                            class="text-xs font-semibold uppercase tracking-wider text-yellow-300 border border-yellow-300 px-3 py-1 rounded-full">View
+                            Details</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4">
+        <!-- Close Button -->
+        <button id="lightbox-close" class="absolute top-5 right-5 text-white/70 hover:text-white transition-colors">
+            <i class="fas fa-times text-4xl"></i>
+        </button>
+
+        <!-- Image Content -->
+        <div class="relative flex flex-col items-center">
+            <img id="lightbox-img" src="" alt="Certificate Full View" class="rounded-lg shadow-2xl">
+            <div class="mt-6 text-center">
+                <h3 id="lightbox-title" class="text-2xl font-display font-bold text-white mb-2"></h3>
+                <p id="lightbox-desc" class="text-gray-300 text-lg"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 border-t border-slate-800 py-12 mt-12 relative overflow-hidden">
+        <!-- Background Gradient -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"></div>
+
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6 relative z-10">
+            <p class="text-sm text-slate-400 font-medium tracking-wide">
+                &copy; <span id="year"></span> <span class="text-slate-200">Satyendra Kushwaha</span>. All rights
+                reserved.
+                <span class="hidden md:inline mx-2 text-slate-700">|</span>
+                <span class="block md:inline mt-2 md:mt-0">Designed by <a href="https://vishnucax.github.io/"
+                        class="text-cyan-500 hover:text-cyan-400 transition-colors font-bold">Vishnu K</a></span>
+            </p>
+
+            <div class="flex space-x-6">
+                <a href="https://www.linkedin.com/in/satyendraa-kushwaha-905633200"
+                    class="text-slate-400 hover:text-white transition-colors transform hover:scale-110"><i
+                        class="fab fa-linkedin text-xl"></i></a>
+                <a href="https://www.researchgate.net/profile/Satyendra-Kushwaha-4"
+                    class="text-slate-400 hover:text-white transition-colors transform hover:scale-110"><i
+                        class="fab fa-researchgate text-xl"></i></a>
+                <a href="https://orcid.org/0009-0008-8948-5820"
+                    class="text-slate-400 hover:text-white transition-colors transform hover:scale-110"><i
+                        class="fab fa-orcid text-xl"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+</body>
+
+</html>
